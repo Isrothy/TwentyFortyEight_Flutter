@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:twenty_forty_eight/models/direction.dart';
 import 'dart:math';
 
@@ -10,7 +11,7 @@ import 'dart:math';
 ///  To simplify swipe, we first tilt the game board to a certain direction,
 ///  swipe, and finally tilt back. The [_map] stores the real game board while
 ///  [getTile] and [setTile] computes the game board after tilting.
-class GameBoard {
+class GameBoard extends ChangeNotifier {
   /// the scale of the game board.
   static const scale = 4;
 
@@ -21,20 +22,14 @@ class GameBoard {
   var _score = 0;
 
   /// the map
-  var _map = List.filled(scale, List.filled(scale, 0), growable: false);
+  var _map = List.filled(scale, List.filled(scale, 0, growable: false),
+      growable: false);
 
   /// The direction of the game board.
   ///
   /// The game board may be tilted in order to simplify swiping
   var _direction = Direction.down;
 
-  /// initializes the game board.
-  ///
-  /// creates two random tiles
-  GameBoard() {
-    _newRandomTile();
-    _newRandomTile();
-  }
 
   /// restarts the game
   ///
@@ -44,6 +39,7 @@ class GameBoard {
     _direction = Direction.down;
     _newRandomTile();
     _newRandomTile();
+    notifyListeners();
   }
 
   /// Tilts the game board to the direction.
@@ -132,6 +128,7 @@ class GameBoard {
       j = generator.nextInt(scale);
     } while (getTile(i, j) != 0);
     setTile(i, j, generator.nextDouble() < probabilityOfGettingFour ? 4 : 2);
+    notifyListeners();
   }
 
   /// true if the game board is still operable.
@@ -212,6 +209,9 @@ class GameBoard {
     _tiltTo(direction: direction);
     bool succeed = _swipeDown();
     _tiltTo(direction: Direction.down);
+    if (succeed) {
+      notifyListeners();
+    }
     return succeed;
   }
 }

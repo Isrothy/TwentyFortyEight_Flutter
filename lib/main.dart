@@ -9,7 +9,7 @@ void main() {
       initialRoute: '/',
       routes: {
         '/': (context) => const StartScreen(),
-        '/game_screen': (context) => const GameScreen(),
+        '/game_screen': (context) => GameScreen(),
       },
     ),
   );

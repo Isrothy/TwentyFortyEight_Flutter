@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-
 class StartGameButton extends StatelessWidget {
-  const StartGameButton({Key? key, required this.onPressed}) : super(key: key);
+  const StartGameButton({
+    required this.startGame,
+    Key? key,
+  }) : super(key: key);
 
-  final Function() onPressed;
+  final Function() startGame;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        onPressed();
+        startGame();
       },
       child: Container(
         padding: const EdgeInsets.all(10),
@@ -46,7 +48,6 @@ class StartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     void navigateToGameScreen() {
       Navigator.pushNamed(context, '/game_screen');
     }
@@ -66,7 +67,9 @@ class StartScreen extends StatelessWidget {
                   fontSize: 90,
                 ),
               ),
-              StartGameButton(onPressed: navigateToGameScreen,),
+              StartGameButton(
+                startGame: navigateToGameScreen,
+              ),
               const SizedBox(
                 height: 20,
               ),
@@ -78,4 +81,3 @@ class StartScreen extends StatelessWidget {
     );
   }
 }
-
