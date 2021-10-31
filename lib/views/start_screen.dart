@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
+
 class StartGameButton extends StatelessWidget {
-  const StartGameButton({Key? key}) : super(key: key);
+  const StartGameButton({Key? key, required this.onPressed}) : super(key: key);
+
+  final Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        onPressed();
+      },
       child: Container(
         padding: const EdgeInsets.all(10),
         child: const Text(
@@ -36,29 +41,36 @@ class ResetHighestScoreButton extends StatelessWidget {
   }
 }
 
-class TwentyFortyEight extends StatelessWidget {
-  const TwentyFortyEight({Key? key}) : super(key: key);
+class StartScreen extends StatelessWidget {
+  const StartScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    void navigateToGameScreen() {
+      Navigator.pushNamed(context, '/game_screen');
+    }
+
     return MaterialApp(
-      title: "2048",
       home: Scaffold(
         appBar: AppBar(
           title: const Text("welcome to 2048"),
         ),
         body: Center(
           child: Column(
-            children: const [
-              Text(
+            children: [
+              const Text(
                 "2048",
-                style: TextStyle(height: 3, fontSize: 90),
+                style: TextStyle(
+                  height: 3,
+                  fontSize: 90,
+                ),
               ),
-              StartGameButton(),
-              SizedBox(
+              StartGameButton(onPressed: navigateToGameScreen,),
+              const SizedBox(
                 height: 20,
               ),
-              ResetHighestScoreButton(),
+              const ResetHighestScoreButton(),
             ],
           ),
         ),
@@ -66,3 +78,4 @@ class TwentyFortyEight extends StatelessWidget {
     );
   }
 }
+
