@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:twenty_forty_eight/views/game_screen.dart';
-import 'package:twenty_forty_eight/views/start_screen.dart';
+import 'package:twenty_forty_eight/views/game_screen/game_screen.dart';
+import 'package:twenty_forty_eight/views/start_screen/start_screen.dart';
 
 void main() {
   runApp(

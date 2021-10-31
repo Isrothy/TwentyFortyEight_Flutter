@@ -1,47 +1,6 @@
 import 'package:flutter/material.dart';
-
-class StartGameButton extends StatelessWidget {
-  const StartGameButton({
-    required this.startGame,
-    Key? key,
-  }) : super(key: key);
-
-  final Function() startGame;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        startGame();
-      },
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: const Text(
-          "NEW GAME",
-          style: TextStyle(height: 1, fontSize: 30),
-        ),
-      ),
-    );
-  }
-}
-
-class ResetHighestScoreButton extends StatelessWidget {
-  const ResetHighestScoreButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {},
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: const Text(
-          "RESET HIGHEST SCORE",
-          style: TextStyle(height: 1, fontSize: 30),
-        ),
-      ),
-    );
-  }
-}
+import 'package:twenty_forty_eight/views/start_screen/reset_highest_score_button.dart';
+import 'package:twenty_forty_eight/views/start_screen/start_game_button.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({Key? key}) : super(key: key);
