@@ -9,7 +9,7 @@ class TwentyFortyEightImage extends StatelessWidget {
       height: 180,
       width: 180,
       padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
         color: Colors.amber,
         borderRadius: BorderRadius.circular(12),
