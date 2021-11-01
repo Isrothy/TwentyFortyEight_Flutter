@@ -36,29 +36,24 @@ class GameBoardView extends StatelessWidget {
     double tileSize =
         (gameBoardViewSize - spacingBetweenTiles * (GameBoard.scale + 1)) /
             (GameBoard.scale);
-    return Stack(
-      children: [
-        const EmptyGameBoard(),
-        Consumer<GameBoard>(builder: (context, gameBoard, child) {
-          List<Widget> tiles = <Widget>[];
-          for (int i = 0; i < GameBoard.scale; ++i) {
-            for (int j = 0; j < GameBoard.scale; ++j) {
-              tiles.add(
+
+    return Consumer<GameBoard>(
+      builder: (context, gameBoard, child) {
+        return Stack(
+          children: [
+            const EmptyGameBoard(),
+            for (int i = 0; i < GameBoard.scale; ++i)
+              for (int j = 0; j < GameBoard.scale; ++j)
                 Positioned(
-                  top: spacingBetweenTiles + i * tileSize,
-                  left: spacingBetweenTiles + j * tileSize,
+                  top: (i + 1) * spacingBetweenTiles + i * tileSize,
+                  left: (j + 1) * spacingBetweenTiles + j * tileSize,
                   child: TileView(
                     value: gameBoard.getTile(i, j),
                   ),
                 ),
-              );
-            }
-          }
-          return Stack(
-            children: tiles,
-          );
-        }),
-      ],
+          ],
+        );
+      },
     );
   }
 }

@@ -22,24 +22,25 @@ class GameBoard extends ChangeNotifier {
   var _score = 0;
 
   /// the map
-  var _map = List.filled(scale, List.filled(scale, 0, growable: false),
-      growable: false);
+  List<List<int>> _map =
+      List.generate(scale, (i) => List.filled(scale, 0, growable: false));
 
   /// The direction of the game board.
   ///
   /// The game board may be tilted in order to simplify swiping
   var _direction = Direction.down;
 
-
   /// restarts the game
   ///
   /// clear the map and creates two random tiles.
   void reStart() {
-    _map = List.filled(scale, List.filled(scale, 0), growable: false);
+    _map =
+        List.generate(scale, (i) => List.filled(scale, 0, growable: false));
     _direction = Direction.down;
     _newRandomTile();
     _newRandomTile();
     notifyListeners();
+    print(_map);
   }
 
   /// Tilts the game board to the direction.
@@ -54,7 +55,7 @@ class GameBoard extends ChangeNotifier {
 
   /// true if a index is valid
   bool _indexIsValid({required int row, required int column}) =>
-      0 <= row && row < scale && 0 < column && column < scale;
+      0 <= row && row < scale && 0 <= column && column < scale;
 
   /// the number of tile on the ith row and the jth column after the the game
   /// board tilt to the Direction.
@@ -71,11 +72,11 @@ class GameBoard extends ChangeNotifier {
   int getTile(int i, int j) {
     assert(_indexIsValid(row: i, column: j));
     switch (_direction) {
-      case Direction.up:
+      case Direction.down:
         {
           return _map[i][j];
         }
-      case Direction.down:
+      case Direction.up:
         {
           return _map[scale - i - 1][scale - j - 1];
         }
@@ -95,12 +96,12 @@ class GameBoard extends ChangeNotifier {
   void setTile(int i, int j, int value) {
     assert(_indexIsValid(row: i, column: j));
     switch (_direction) {
-      case Direction.up:
+      case Direction.down:
         {
           _map[i][j] = value;
         }
         break;
-      case Direction.down:
+      case Direction.up:
         {
           _map[scale - i - 1][scale - j - 1] = value;
         }
@@ -121,6 +122,7 @@ class GameBoard extends ChangeNotifier {
   /// insert a new random tile into the game board. It will be 4 with a
   /// probability of [probabilityOfGettingFour] and otherwise it will be 2
   void _newRandomTile() {
+    print("wow");
     int i, j;
     final generator = Random();
     do {

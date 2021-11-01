@@ -109,13 +109,15 @@ class TileView extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
-        child: Text(
-          value == 0 ? "" : "$value",
-          style: TextStyle(
-            fontSize: fontSize(),
-            color: foregroundColor(),
-          ),
-        ),
+        child: value == 0
+            ? const Text("")
+            : Text(
+                "$value",
+                style: TextStyle(
+                  fontSize: fontSize(),
+                  color: foregroundColor(),
+                ),
+              ),
       ),
     );
   }

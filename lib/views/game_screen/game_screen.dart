@@ -12,6 +12,10 @@ class GameScreen extends StatelessWidget {
 
   final GameBoard gameBoard = GameBoard();
 
+  void startGame() {
+    gameBoard.reStart();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -41,7 +45,11 @@ class GameScreen extends StatelessWidget {
                             const ScoreBox(text: "BEST", score: 0),
                           ],
                         ),
-                        const NewGameButton(),
+                        NewGameButton(
+                          onTap: () {
+                            startGame();
+                          },
+                        ),
                       ],
                     )
                   ],

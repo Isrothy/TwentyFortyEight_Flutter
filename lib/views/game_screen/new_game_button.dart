@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 
+typedef NewGameButtonCallBack = void Function();
+
 class NewGameButton extends StatelessWidget {
-  const NewGameButton({Key? key}) : super(key: key);
+  const NewGameButton({
+    required this.onTap,
+    Key? key,
+  }) : super(key: key);
+
+  final NewGameButtonCallBack onTap;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: null,
+      onPressed: () {
+        onTap();
+      },
       child: Container(
         height: 60,
         width: 153,
