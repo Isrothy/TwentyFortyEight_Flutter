@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:twenty_forty_eight/models/direction.dart';
 import 'package:twenty_forty_eight/models/game_board.dart';
 import 'package:twenty_forty_eight/views/game_screen/new_game_button.dart';
 import 'package:twenty_forty_eight/views/game_screen/score_box.dart';
@@ -22,7 +23,7 @@ class GameScreen extends StatelessWidget {
       child: MaterialApp(
         home: Scaffold(
           appBar: AppBar(
-            title: const Text("enjoy the game"),
+            title: const Text("ENJOY THE GAME"),
           ),
           body: Center(
             child: Column(
@@ -54,13 +55,35 @@ class GameScreen extends StatelessWidget {
                     )
                   ],
                 ),
-                const GameBoardView(),
+                GestureDetector(
+                  onPanUpdate: (details) {
+                    print("ww");
+                    var delta = details.delta;
+                    if (delta.dx.abs() < delta.dy.abs()) {
+                      if (delta.dy < 0) {
+                        gameBoard.swipe(direction: Direction.left);
+                      } else {
+                        gameBoard.swipe(direction: Direction.right);
+                      }
+                    } else {
+                      if (delta.dx < 0) {
+                        gameBoard.swipe(direction: Direction.down);
+                      } else {
+                        gameBoard.swipe(direction: Direction.up);
+                      }
+                    }
+                  },
+                  child: const GameBoardView(),
+                )
               ],
             ),
           ),
         ),
       ),
-      create: (context) => gameBoard,
+      create: (context) {
+        gameBoard.reStart();
+        return gameBoard;
+      },
     );
   }
 }

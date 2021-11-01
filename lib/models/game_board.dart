@@ -9,7 +9,7 @@ import 'dart:math';
 ///  possible. Simultaneously it records the score. If two tiles whose value
 ///  are x merges, a new tile with value 2x appears and the score added up 2x.
 ///  To simplify swipe, we first tilt the game board to a certain direction,
-///  swipe, and finally tilt back. The [_map] stores the real game board while
+///  swipe, and finally tilt back. The [map] stores the real game board while
 ///  [getTile] and [setTile] computes the game board after tilting.
 class GameBoard extends ChangeNotifier {
   /// the scale of the game board.
@@ -22,7 +22,7 @@ class GameBoard extends ChangeNotifier {
   var _score = 0;
 
   /// the map
-  List<List<int>> _map =
+  List<List<int>> map =
       List.generate(scale, (i) => List.filled(scale, 0, growable: false));
 
   /// The direction of the game board.
@@ -34,13 +34,11 @@ class GameBoard extends ChangeNotifier {
   ///
   /// clear the map and creates two random tiles.
   void reStart() {
-    _map =
-        List.generate(scale, (i) => List.filled(scale, 0, growable: false));
+    map = List.generate(scale, (i) => List.filled(scale, 0, growable: false));
     _direction = Direction.down;
-    _newRandomTile();
-    _newRandomTile();
+    newRandomTile();
+    newRandomTile();
     notifyListeners();
-    print(_map);
   }
 
   /// Tilts the game board to the direction.
@@ -48,7 +46,9 @@ class GameBoard extends ChangeNotifier {
   /// To tilt the game board to a certain direction, we just assign the property
   /// direction rather than change the map. And we access the tile after tilting
   /// by [getTile] and [setTile] where we perform the coordinate transformation
-  void _tiltTo({required Direction direction}) => _direction;
+  void _tiltTo({required Direction direction}) {
+    _direction = direction;
+  }
 
   /// the current score
   int getScore() => _score;
@@ -74,19 +74,19 @@ class GameBoard extends ChangeNotifier {
     switch (_direction) {
       case Direction.down:
         {
-          return _map[i][j];
+          return map[i][j];
         }
       case Direction.up:
         {
-          return _map[scale - i - 1][scale - j - 1];
+          return map[scale - i - 1][scale - j - 1];
         }
       case Direction.left:
         {
-          return _map[j][scale - i - 1];
+          return map[j][scale - i - 1];
         }
       case Direction.right:
         {
-          return _map[scale - j - 1][i];
+          return map[scale - j - 1][i];
         }
     }
   }
@@ -98,22 +98,22 @@ class GameBoard extends ChangeNotifier {
     switch (_direction) {
       case Direction.down:
         {
-          _map[i][j] = value;
+          map[i][j] = value;
         }
         break;
       case Direction.up:
         {
-          _map[scale - i - 1][scale - j - 1] = value;
+          map[scale - i - 1][scale - j - 1] = value;
         }
         break;
       case Direction.left:
         {
-          _map[j][scale - i - 1] = value;
+          map[j][scale - i - 1] = value;
         }
         break;
       case Direction.right:
         {
-          _map[scale - j - 1][i] = value;
+          map[scale - j - 1][i] = value;
         }
         break;
     }
@@ -121,8 +121,7 @@ class GameBoard extends ChangeNotifier {
 
   /// insert a new random tile into the game board. It will be 4 with a
   /// probability of [probabilityOfGettingFour] and otherwise it will be 2
-  void _newRandomTile() {
-    print("wow");
+  void newRandomTile() {
     int i, j;
     final generator = Random();
     do {
@@ -161,10 +160,10 @@ class GameBoard extends ChangeNotifier {
     assert(_indexIsValid(row: x, column: y));
     assert(_indexIsValid(row: newX, column: newY));
     assert((x == newX || y == newY) &&
-        (getTile(x, y) == getTile(newX, newY) || getTile(newX, newY) == 0));
+        ((getTile(x, y) == getTile(newX, newY) || getTile(newX, newY) == 0)));
     assert(getTile(x, y) != 0);
 
-    if (x == newX || y == newY) {
+    if (x == newX && y == newY) {
       return;
     }
     if (getTile(x, y) == getTile(newX, newY)) {
@@ -181,7 +180,7 @@ class GameBoard extends ChangeNotifier {
     bool succeed = false;
     for (int j = 0; j < scale; ++j) {
       int last = scale - 1;
-      for (int i = 0; j < scale; ++i) {
+      for (int i = scale - 1; i >= 0; --i) {
         if (getTile(i, j) != 0 && last != i) {
           if (getTile(i, j) == getTile(last, j)) {
             _move(i, j, last, j);
@@ -206,7 +205,7 @@ class GameBoard extends ChangeNotifier {
   /// swipe the game board to the direction. To simplify code complexity, we
   /// first tilt the game board to the direction and then swipe down. Finally
   /// we tilt back.
-  bool swipe({required Direction direction}) {
+  void swipe({required Direction direction}) {
     assert(operable());
     _tiltTo(direction: direction);
     bool succeed = _swipeDown();
@@ -214,6 +213,5 @@ class GameBoard extends ChangeNotifier {
     if (succeed) {
       notifyListeners();
     }
-    return succeed;
   }
 }
