@@ -110,7 +110,7 @@ class TileView extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          "$value",
+          value == 0 ? "" : "$value",
           style: TextStyle(
             fontSize: fontSize(),
             color: foregroundColor(),
