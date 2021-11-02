@@ -13,6 +13,8 @@ class GameScreen extends StatelessWidget {
 
   final GameBoard gameBoard = GameBoard();
 
+  static const gestureSensitive = 5;
+
   void startGame() {
     gameBoard.reStart();
   }
@@ -57,12 +59,13 @@ class GameScreen extends StatelessWidget {
                 ),
                 GestureDetector(
                   onHorizontalDragEnd: (DragEndDetails details) {
+                    if (details.primaryVelocity!.abs() < gestureSensitive) {
+                      return;
+                    }
                     bool succeed = false;
                     if(details.primaryVelocity! > 0) {
-                      // print("right");
                       succeed = gameBoard.swipe(direction: Direction.right);
                     } else {
-                      // print("left");
                       succeed = gameBoard.swipe(direction: Direction.left);
                     }
                     if (succeed) {
@@ -70,12 +73,13 @@ class GameScreen extends StatelessWidget {
                     }
                   },
                   onVerticalDragEnd: (DragEndDetails details) {
+                    if (details.primaryVelocity!.abs() < gestureSensitive) {
+                      return;
+                    }
                     bool succeed = false;
                     if(details.primaryVelocity! > 0) {
-                      // print("up");
                       succeed = gameBoard.swipe(direction: Direction.down);
                     } else {
-                      // print("down");
                       succeed = gameBoard.swipe(direction: Direction.up);
                     }
                     if (succeed) {
