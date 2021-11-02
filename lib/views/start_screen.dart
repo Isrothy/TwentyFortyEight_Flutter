@@ -1,8 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:twenty_forty_eight/models/game_information.dart';
-import 'package:twenty_forty_eight/views/start_screen/reset_highest_score_button.dart';
-import 'package:twenty_forty_eight/views/start_screen/start_game_button.dart';
 
+class _StartGameButton extends StatelessWidget {
+  const _StartGameButton({
+    required this.startGame,
+    Key? key,
+  }) : super(key: key);
+
+  final Function() startGame;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: startGame,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        child: const Text(
+          "NEW GAME",
+          style: TextStyle(height: 1, fontSize: 30),
+        ),
+      ),
+    );
+  }
+}
+
+class _ResetHighestScoreButton extends StatelessWidget {
+  const _ResetHighestScoreButton({
+    required this.resetScore,
+    Key? key,
+  }) : super(key: key);
+
+  final Function() resetScore;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: resetScore,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        child: const Text(
+          "RESET HIGHEST SCORE",
+          style: TextStyle(height: 1, fontSize: 30),
+        ),
+      ),
+    );
+  }
+}
 
 class StartScreen extends StatelessWidget {
   const StartScreen({
@@ -37,13 +80,13 @@ class StartScreen extends StatelessWidget {
                   fontSize: 90,
                 ),
               ),
-              StartGameButton(
+              _StartGameButton(
                 startGame: navigateToGameScreen,
               ),
               const SizedBox(
                 height: 20,
               ),
-              ResetHighestScoreButton(
+              _ResetHighestScoreButton(
                 resetScore: resetScore,
               ),
             ],
