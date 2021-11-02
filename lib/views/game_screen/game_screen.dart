@@ -8,6 +8,7 @@ import 'package:twenty_forty_eight/views/game_screen/score_box.dart';
 import 'package:twenty_forty_eight/views/game_screen/twenty_forty_eight_image.dart';
 
 import 'game_board_view.dart';
+import 'game_end_view.dart';
 
 class GameScreen extends StatelessWidget {
   GameScreen({
@@ -71,7 +72,8 @@ class GameScreen extends StatelessWidget {
                 ),
                 GestureDetector(
                   onHorizontalDragEnd: (DragEndDetails details) {
-                    if (details.primaryVelocity!.abs() < gestureSensitive) {
+                    if (gameBoard.operable() &&
+                        details.primaryVelocity!.abs() < gestureSensitive) {
                       return;
                     }
                     bool succeed = false;
@@ -88,9 +90,9 @@ class GameScreen extends StatelessWidget {
                       }
                     }
                   },
-
                   onVerticalDragEnd: (DragEndDetails details) {
-                    if (details.primaryVelocity!.abs() < gestureSensitive) {
+                    if (gameBoard.operable() &&
+                        details.primaryVelocity!.abs() < gestureSensitive) {
                       return;
                     }
                     bool succeed = false;
@@ -107,8 +109,15 @@ class GameScreen extends StatelessWidget {
                       }
                     }
                   },
-                  child: const GameBoardView(),
-                )
+                  child: Consumer<GameBoard>(
+                    builder: (context, gameBoard, child) => Stack(
+                      children: [
+                        const GameBoardView(),
+                        if (!gameBoard.operable()) const GameEndView(),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
