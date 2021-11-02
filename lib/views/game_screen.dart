@@ -5,6 +5,23 @@ import 'package:twenty_forty_eight/models/game_board.dart';
 import 'package:twenty_forty_eight/models/game_information.dart';
 import 'dart:math';
 
+class _GameBoardViewSizeInformation {
+  final double spaceBetweenTiles = 10;
+
+  late final double width;
+  late final double height;
+  late final double tileSize;
+
+  _GameBoardViewSizeInformation(context) {
+    var screenSize = MediaQuery.of(context).size;
+
+    width = min(screenSize.width, screenSize.height * 9 / 16) * 0.8;
+    height = width;
+    tileSize =
+        (width - spaceBetweenTiles * (GameBoard.scale + 1)) / (GameBoard.scale);
+  }
+}
+
 class _TileView extends StatelessWidget {
   const _TileView({
     required this.value,
@@ -97,15 +114,10 @@ class _TileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    double gameBoardViewSize = screenSize.width * 0.8;
-    double spacingBetweenTiles = 10;
-    double tileSize =
-        (gameBoardViewSize - spacingBetweenTiles * (GameBoard.scale + 1)) /
-            (GameBoard.scale);
+    final sizeInfo = _GameBoardViewSizeInformation(context);
     return Container(
-      width: tileSize,
-      height: tileSize,
+      width: sizeInfo.tileSize,
+      height: sizeInfo.tileSize,
       decoration: BoxDecoration(
         color: backgroundColor(),
         borderRadius: BorderRadius.circular(12),
@@ -230,15 +242,16 @@ class _ScoreBox extends StatelessWidget {
 class _GameEndView extends StatelessWidget {
   const _GameEndView({Key? key}) : super(key: key);
 
+  static const backGroundColor = Color(0x7fbbada0);
+
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    double gameBoardViewSize = screenSize.width * 0.8;
+    final sizeInfo = _GameBoardViewSizeInformation(context);
     return Container(
-      height: gameBoardViewSize,
-      width: gameBoardViewSize,
+      height: sizeInfo.height,
+      width: sizeInfo.width,
       decoration: BoxDecoration(
-        color: const Color(0x7fbbada0),
+        color: backGroundColor,
         borderRadius: BorderRadius.circular(12),
         shape: BoxShape.rectangle,
       ),
@@ -263,10 +276,10 @@ class _EmptyGameBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
+    final sizeInfo = _GameBoardViewSizeInformation(context);
     return SizedBox(
-      height: screenSize.width * 0.8,
-      width: screenSize.width * 0.8,
+      height: sizeInfo.height,
+      width: sizeInfo.width,
       child: Container(
         decoration: BoxDecoration(
           color: backGroundColor,
@@ -283,12 +296,7 @@ class _GameBoardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    double gameBoardViewSize = screenSize.width * 0.8;
-    double spacingBetweenTiles = 10;
-    double tileSize =
-        (gameBoardViewSize - spacingBetweenTiles * (GameBoard.scale + 1)) /
-            (GameBoard.scale);
+    final sizeInfo = _GameBoardViewSizeInformation(context);
 
     return Consumer<GameBoard>(
       builder: (context, gameBoard, child) {
@@ -298,8 +306,10 @@ class _GameBoardView extends StatelessWidget {
             for (int i = 0; i < GameBoard.scale; ++i)
               for (int j = 0; j < GameBoard.scale; ++j)
                 Positioned(
-                  top: (i + 1) * spacingBetweenTiles + i * tileSize,
-                  left: (j + 1) * spacingBetweenTiles + j * tileSize,
+                  top: (i + 1) * sizeInfo.spaceBetweenTiles +
+                      i * sizeInfo.tileSize,
+                  left: (j + 1) * sizeInfo.spaceBetweenTiles +
+                      j * sizeInfo.tileSize,
                   child: _TileView(
                     value: gameBoard.getTile(i, j),
                   ),
