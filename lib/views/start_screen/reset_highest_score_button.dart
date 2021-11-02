@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 class ResetHighestScoreButton extends StatelessWidget {
-  const ResetHighestScoreButton({Key? key}) : super(key: key);
+  const ResetHighestScoreButton({
+    required this.resetScore,
+    Key? key,
+  }) : super(key: key);
+
+  final Function() resetScore;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: resetScore,
       child: Container(
         padding: const EdgeInsets.all(10),
         child: const Text(

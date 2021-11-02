@@ -211,6 +211,9 @@ class GameBoard extends ChangeNotifier {
     _tiltTo(direction: direction);
     bool succeed = _swipeDown();
     _tiltTo(direction: Direction.down);
+    if (succeed) {
+      notifyListeners();
+    }
     return succeed;
   }
 }

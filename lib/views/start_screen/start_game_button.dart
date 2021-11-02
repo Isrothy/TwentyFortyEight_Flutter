@@ -11,9 +11,7 @@ class StartGameButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        startGame();
-      },
+      onPressed: startGame,
       child: Container(
         padding: const EdgeInsets.all(10),
         child: const Text(
