@@ -205,13 +205,11 @@ class GameBoard extends ChangeNotifier {
   /// swipe the game board to the direction. To simplify code complexity, we
   /// first tilt the game board to the direction and then swipe down. Finally
   /// we tilt back.
-  void swipe({required Direction direction}) {
+  bool swipe({required Direction direction}) {
     assert(operable());
     _tiltTo(direction: direction);
     bool succeed = _swipeDown();
     _tiltTo(direction: Direction.down);
-    if (succeed) {
-      notifyListeners();
-    }
+    return succeed;
   }
 }
