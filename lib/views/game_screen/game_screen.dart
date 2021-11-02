@@ -56,21 +56,30 @@ class GameScreen extends StatelessWidget {
                   ],
                 ),
                 GestureDetector(
-                  onPanUpdate: (details) {
-                    print("ww");
-                    var delta = details.delta;
-                    if (delta.dx.abs() < delta.dy.abs()) {
-                      if (delta.dy < 0) {
-                        gameBoard.swipe(direction: Direction.left);
-                      } else {
-                        gameBoard.swipe(direction: Direction.right);
-                      }
+                  onHorizontalDragEnd: (DragEndDetails details) {
+                    bool succeed = false;
+                    if(details.primaryVelocity! > 0) {
+                      // print("right");
+                      succeed = gameBoard.swipe(direction: Direction.right);
                     } else {
-                      if (delta.dx < 0) {
-                        gameBoard.swipe(direction: Direction.down);
-                      } else {
-                        gameBoard.swipe(direction: Direction.up);
-                      }
+                      // print("left");
+                      succeed = gameBoard.swipe(direction: Direction.left);
+                    }
+                    if (succeed) {
+                      gameBoard.newRandomTile();
+                    }
+                  },
+                  onVerticalDragEnd: (DragEndDetails details) {
+                    bool succeed = false;
+                    if(details.primaryVelocity! > 0) {
+                      // print("up");
+                      succeed = gameBoard.swipe(direction: Direction.down);
+                    } else {
+                      // print("down");
+                      succeed = gameBoard.swipe(direction: Direction.up);
+                    }
+                    if (succeed) {
+                      gameBoard.newRandomTile();
                     }
                   },
                   child: const GameBoardView(),

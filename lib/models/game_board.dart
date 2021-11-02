@@ -36,6 +36,7 @@ class GameBoard extends ChangeNotifier {
   void reStart() {
     map = List.generate(scale, (i) => List.filled(scale, 0, growable: false));
     _direction = Direction.down;
+    _score = 0;
     newRandomTile();
     newRandomTile();
     notifyListeners();
