@@ -49,11 +49,9 @@ class _ResetHighestScoreButton extends StatelessWidget {
 
 class StartScreen extends StatelessWidget {
   const StartScreen({
-    required this.gameInformation,
     Key? key,
   }) : super(key: key);
 
-  final GameInformation gameInformation;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +60,7 @@ class StartScreen extends StatelessWidget {
     }
 
     void resetScore() {
-      gameInformation.setBestScore(0);
+      setBestScore(0);
     }
 
     return MaterialApp(

@@ -321,20 +321,32 @@ class _GameBoardView extends StatelessWidget {
   }
 }
 
-class GameScreen extends StatelessWidget {
-  GameScreen({
-    Key? key,
-    required this.gameInformation,
-  }) : super(key: key);
+class GameScreen extends StatefulWidget {
+  const GameScreen({Key? key}) : super(key: key);
 
+  @override
+  _GameScreenState createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
   final GameBoard gameBoard = GameBoard();
-
-  final GameInformation gameInformation;
 
   static const gestureSensitive = 3;
 
+  int _bestScore = 0;
+
   void startGame() {
     gameBoard.reStart();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getBestScore().then((value) {
+      setState(() {
+        _bestScore = value;
+      });
+    });
   }
 
   @override
@@ -363,13 +375,10 @@ class GameScreen extends StatelessWidget {
                                 score: gameBoard.getScore(),
                               ),
                             ),
-                            Consumer<GameInformation>(
-                              builder: (context, gameInformation, child) =>
-                                  _ScoreBox(
-                                text: "BEST",
-                                score: gameInformation.getBestScore(),
-                              ),
-                            )
+                            _ScoreBox(
+                              text: "BEST",
+                              score: _bestScore,
+                            ),
                           ],
                         ),
                         _NewGameButton(
@@ -395,9 +404,11 @@ class GameScreen extends StatelessWidget {
                     }
                     if (succeed) {
                       gameBoard.newRandomTile();
-                      if (gameBoard.getScore() >
-                          gameInformation.getBestScore()) {
-                        gameInformation.setBestScore(gameBoard.getScore());
+                      if (gameBoard.getScore() > _bestScore) {
+                        setState(() {
+                          _bestScore = gameBoard.getScore();
+                        });
+                        setBestScore(_bestScore);
                       }
                     }
                   },
@@ -414,9 +425,11 @@ class GameScreen extends StatelessWidget {
                     }
                     if (succeed) {
                       gameBoard.newRandomTile();
-                      if (gameBoard.getScore() >
-                          gameInformation.getBestScore()) {
-                        gameInformation.setBestScore(gameBoard.getScore());
+                      if (gameBoard.getScore() > _bestScore) {
+                        setState(() {
+                          _bestScore = gameBoard.getScore();
+                        });
+                        setBestScore(_bestScore);
                       }
                     }
                   },
