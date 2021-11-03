@@ -11,18 +11,17 @@ part 'game_information.g.dart';
 
 @JsonSerializable()
 class GameInformation extends ChangeNotifier {
-
   @JsonKey(required: true)
-  int _bestScore = 0;
+  int bestScore = 0;
 
-  GameInformation();
+  GameInformation({required this.bestScore});
 
   void setBestScore(int newValue) {
-    _bestScore = newValue;
+    bestScore = newValue;
     notifyListeners();
   }
 
-  int getBestScore() => _bestScore;
+  int getBestScore() => bestScore;
 
   factory GameInformation.fromJson(Map<String, dynamic> json) =>
       _$GameInformationFromJson(json);
@@ -48,9 +47,9 @@ class GameInformationStorage {
       final file = await _localFile;
 
       final contents = await file.readAsString();
-      
+
       Map<String, dynamic> map = jsonEncode(contents) as Map<String, dynamic>;
-      
+
       return GameInformation.fromJson(map);
     } catch (e) {
       return null;
